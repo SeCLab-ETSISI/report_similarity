@@ -17,8 +17,8 @@ and install the required packages:
 ## Project Structure
 
 * The `final_results` folder contains example outputs for sentences and full report similarities.
-* pdf_csv_pipeline.py allows to create a .csv file from a report full of .pdf files, extracting their md5 hash (identifier) and text.
-* sim_pipeline.py allows to find sentences in full texts and obtain the `N` adjacent sentences, use `N=0` for full texts.
+* `pdf_csv_pipeline.py` allows to create a .csv file from a report full of .pdf files, extracting their md5 hash (identifier) and text.
+* `sim_pipeline.py` allows to find sentences in full texts and obtain the `N` adjacent sentences, use `N=0` for full texts.
 
 
 ```txt
