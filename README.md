@@ -49,10 +49,8 @@ Create a csv file using `pdf_csv_pipeline.py`, and use the resulting .csv file i
 #### Example
 
 ```txt
-[SC2-RL][FIX] Diagrams && subprocess
 * [README][ADD] Execution && Component diagram
-* [BOT][ADD] Change from `aioredis` to `redis.asyncio`
-* [RUN_GAME][DELETE]
-* [SC2ENV][FIX] Subprocess platform
+* [PIPELINES][ADD] PDF functionality
+* [RESULTS][DELETE]
 ```
 
