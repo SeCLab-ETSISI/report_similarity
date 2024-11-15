@@ -22,9 +22,14 @@ class SimilarityPipeline:
         self.phrases_df = None
         self.results_df = None
 
+    """ 
     def load_data(self):
         print(f"[📂] Loading reports from {self.reports_path}")
-        self.reports_df = pd.read_csv(self.reports_path, sep='|', quoting=csv.QUOTE_ALL)
+        try:
+            self.reports_df = pd.read_csv(self.reports_path, sep='|', quoting=csv.QUOTE_ALL)
+        except pd.errors.ParserError as e:
+            print(f"Error: {e}")
+        
         print(f"Report columns: {self.reports_df.columns}")
 
         print(f"[📂] Loading phrases from {self.phrases_path}")
@@ -37,6 +42,26 @@ class SimilarityPipeline:
         else:
             raise ValueError("Unsupported file format for phrases. Only .csv and .json are supported.")
         print(f"Phrase columns: {self.phrases_df.columns}")
+    """
+    #  chunks version
+    def load_data(self):
+        """Loads the reports CSV and phrases file into dataframes."""
+        print(f"[📂] Loading reports from {self.reports_path}")
+        self.reports_df = pd.read_csv(self.reports_path, sep='|', quoting=csv.QUOTE_ALL, on_bad_lines='skip', engine='python')
+        print(f"Report columns: {self.reports_df.columns}")
+
+        print(f"[📂] Loading phrases from {self.phrases_path}")
+        if self.phrases_path.endswith('.json'):
+            with open(self.phrases_path, 'r') as file:
+                phrases_data = json.load(file)
+            self.phrases_df = pd.DataFrame(phrases_data)
+        elif self.phrases_path.endswith('.csv'):
+            self.phrases_df = pd.read_csv(self.phrases_path, low_memory=False, on_bad_lines='skip')
+        else:
+            raise ValueError("Unsupported file format for phrases. Only .csv and .json are supported.")
+        print(f"Phrase columns: {self.phrases_df.columns}")
+
+
 
     def preprocess_reports(self):
         print("[🗃️ ] Tokenizing and preprocessing reports")
@@ -144,17 +169,18 @@ class SimilarityPipeline:
 
 
 pipeline = SimilarityPipeline(
-    reports_path='./data/processed_documents.csv',
-    phrases_path='./data/cti2mitre_train.csv',
+   
+    reports_path='./data/reports/reports_18k.csv',
+    phrases_path='./data/cti_to_mitre/split_files/cti_to_mitre_full.csv', ### OJO!!! PART 1
     report_identifier='_id',
     phrase_field='sentence',                    # TRAM
     label_field='label_tec',                    # TRAM
     threshold=0.75,
-    batch_size=100
+    batch_size=50
 )
 
 pipeline.run(
     full_text_output='./similarity-results/full_report_similarity.csv',
-    adjacent_sentences_output='./similarity-results/oct15.json',
+    adjacent_sentences_output='./similarity-results/nov14.json',
     N=3
 )
