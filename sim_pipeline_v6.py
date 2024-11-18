@@ -22,28 +22,6 @@ class SimilarityPipeline:
         self.phrases_df = None
         self.results_df = None
 
-    """ 
-    def load_data(self):
-        print(f"[📂] Loading reports from {self.reports_path}")
-        try:
-            self.reports_df = pd.read_csv(self.reports_path, sep='|', quoting=csv.QUOTE_ALL)
-        except pd.errors.ParserError as e:
-            print(f"Error: {e}")
-        
-        print(f"Report columns: {self.reports_df.columns}")
-
-        print(f"[📂] Loading phrases from {self.phrases_path}")
-        if self.phrases_path.endswith('.json'):
-            with open(self.phrases_path, 'r') as file:
-                phrases_data = json.load(file)
-            self.phrases_df = pd.DataFrame(phrases_data)
-        elif self.phrases_path.endswith('.csv'):
-            self.phrases_df = pd.read_csv(self.phrases_path)
-        else:
-            raise ValueError("Unsupported file format for phrases. Only .csv and .json are supported.")
-        print(f"Phrase columns: {self.phrases_df.columns}")
-    """
-    #  chunks version
     def load_data(self):
         """Loads the reports CSV and phrases file into dataframes."""
         print(f"[📂] Loading reports from {self.reports_path}")
@@ -60,6 +38,8 @@ class SimilarityPipeline:
         else:
             raise ValueError("Unsupported file format for phrases. Only .csv and .json are supported.")
         print(f"Phrase columns: {self.phrases_df.columns}")
+        print(f"Dataframe shape: {self.phrases_df.shape}")
+        print(f"Dataframe memory usage: {self.phrases_df.memory_usage().sum() / 1024**2:.2f} MB")
 
 
 
@@ -122,6 +102,7 @@ class SimilarityPipeline:
 
         self.results_df = pd.DataFrame(results).drop_duplicates()
 
+    '''
     def save_full_report_text(self, output_path):
         """Saves or appends results to a CSV file."""
         print(f"[💾] Saving full report text to {output_path}")
@@ -131,7 +112,34 @@ class SimilarityPipeline:
         else:
             combined_df = self.results_df
         combined_df.to_csv(output_path, index=False)
+    '''
 
+    def save_full_report_text(self, output_path):
+        """Saves results to a CSV file in batches, freeing memory after each batch."""
+        print(f"[💾] Saving full report text to {output_path} in batches")
+        write_header = not os.path.exists(output_path)  # Write header only if the file doesn't exist
+
+        with open(output_path, 'a', newline='', encoding='utf-8') as file:
+            writer = csv.DictWriter(file, fieldnames=self.results_df.columns)
+            if write_header:
+                writer.writeheader()
+
+            # Write in batches
+            num_batches = len(self.results_df) // self.batch_size + (1 if len(self.results_df) % self.batch_size != 0 else 0)
+            for batch_idx in range(num_batches):
+                start_idx = batch_idx * self.batch_size
+                end_idx = min((batch_idx + 1) * self.batch_size, len(self.results_df))
+
+                batch = self.results_df.iloc[start_idx:end_idx].to_dict(orient='records')
+                writer.writerows(batch)
+                print(f"Saved batch {batch_idx + 1}/{num_batches}")
+                del batch  # Free memory for the batch
+                gc.collect()  # Trigger garbage collection to release unused memory
+
+        print("[✅] Finished saving full report text")
+
+
+    '''
     def save_adjacent_sentences(self, output_path, N):
         """Saves or appends results to a JSON file with N adjacent sentences."""
         print(f"[💾] Saving adjacent sentences to {output_path}")
@@ -146,6 +154,37 @@ class SimilarityPipeline:
 
         with open(output_path, 'w') as file:
             json.dump(combined_data, file, indent=2)
+    '''
+
+    def save_adjacent_sentences(self, output_path, N):
+        """Saves or appends results to a JSON file in batches, freeing memory after each batch."""
+        print(f"[💾] Saving adjacent sentences to {output_path} in batches")
+        write_mode = 'w' if not os.path.exists(output_path) else 'r+'
+
+        if os.path.exists(output_path):
+            with open(output_path, 'r', encoding='utf-8') as file:
+                existing_data = json.load(file)
+        else:
+            existing_data = []
+
+        num_batches = len(self.results_df) // self.batch_size + (1 if len(self.results_df) % self.batch_size != 0 else 0)
+        for batch_idx in range(num_batches):
+            start_idx = batch_idx * self.batch_size
+            end_idx = min((batch_idx + 1) * self.batch_size, len(self.results_df))
+
+            batch_data = self.results_df.iloc[start_idx:end_idx].to_dict(orient='records')
+            combined_batch = existing_data + batch_data
+
+            with open(output_path, write_mode, encoding='utf-8') as file:
+                json.dump(combined_batch, file, indent=2)
+                write_mode = 'w'  # Switch to write mode after the first append
+                print(f"Saved batch {batch_idx + 1}/{num_batches}")
+            existing_data = []  # Clear after initial load to avoid duplicating data
+            del batch_data, combined_batch  # Free memory for the batch
+            gc.collect()
+
+        print("[✅] Finished saving adjacent sentences")
+
 
     def run(self, full_text_output, adjacent_sentences_output=None, N=0):
         self.load_data()
