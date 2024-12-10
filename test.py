@@ -10,11 +10,11 @@ import gc
 from io import StringIO
 
 
-def get_adjacent_sentences(batch_df, sentence_idx, N=2):
-    """Returns N sentences before and after the found sentence."""
-    start_idx = max(0, sentence_idx - N)
-    end_idx = min(len(batch_df) - 1, sentence_idx + N)
-    return batch_df['sentence'][start_idx:end_idx + 1].to_list()
+def get_adjacent_sentences(batch_df, idx_sentence, N):
+    """Returns N adjacent sentences before and after the target sentence."""
+    start_idx = max(0, idx_sentence - N)
+    end_idx = min(len(batch_df) - 1, idx_sentence + N)
+    return batch_df[start_idx:end_idx + 1].to_dicts()
 
 
 class SimilarityPipeline:
@@ -40,14 +40,14 @@ class SimilarityPipeline:
                 phrases_data = json.load(file)
             self.phrases_df = pl.DataFrame(phrases_data)
         else:
-            raise ValueError("Unsupported file format. Only .csv and .json are accepted.")
+            raise ValueError("Unsupported file format for phrases. Only .csv and .json are supported.")
 
-        print(f"Phrases DataFrame columns: {self.phrases_df.columns}")
-        print(f"DataFrame size: {self.phrases_df.shape}")
+        print(f"Phrase columns: {self.phrases_df.columns}")
+        print(f"Dataframe shape: {self.phrases_df.shape}")
 
     def process_reports(self):
-        """Processes reports into tokenized sentences."""
-        print(f"[📂] Processing reports from {self.reports_path}")
+        """Yields tokenized sentences from the reports CSV file."""
+        print(f"[📂] Preprocessing reports from {self.reports_path}")
 
         with open(self.reports_path, 'r', encoding='utf-8') as file:
             data = file.read().replace('\x00', '')
@@ -73,37 +73,41 @@ class SimilarityPipeline:
         return csr_matrix(similarities)
 
     def filter_results(self, batch_df, similarities):
-        """Filters results and retrieves adjacent sentences."""
+        """Filters results and includes N adjacent sentences."""
         results = []
-        for phrase_idx, sims in enumerate(similarities):
+        for idx_phrase, sims in enumerate(similarities):
             similar_indices = sims.indices[sims.data >= self.threshold]
 
-            for sentence_idx in map(int, similar_indices):
-                adjacent_sentences = get_adjacent_sentences(batch_df, sentence_idx, self.N)
-                results.append({
-                    'hash': batch_df['hash'][int(sentence_idx)],  # Report ID
-                    'phrase': self.phrases_df[self.phrase_field][phrase_idx],  # Found phrase
-                    'similarity': sims.data[sims.indices == sentence_idx][0],  # Similarity score
-                    'adjacent_sentences': adjacent_sentences  # List of adjacent sentences
-                })
+            for idx_sentence in similar_indices:
+                adjacent_sentences = get_adjacent_sentences(batch_df, idx_sentence, self.N)
+                for sentence_info in adjacent_sentences:
+                    results.append({
+                        'phrase': self.phrases_df[self.phrase_field][idx_phrase],
+                        'phrase_report_title': self.phrases_df[self.label_field][idx_phrase],
+                        'found_report_hash': sentence_info['hash'],
+                        'similarity': sims.data[sims.indices == idx_sentence][0],
+                        'found_sentence': sentence_info['sentence'],
+                        'label': self.phrases_df[self.label_field][idx_phrase],
+                    })
         return results
 
     def ensure_directory_exists(self, file_path):
-        """Creates the output directory if it does not exist."""
+        """Ensure the directory for the given file path exists."""
         directory = os.path.dirname(file_path)
         if not os.path.exists(directory):
             os.makedirs(directory)
             print(f"[📂] Created directory: {directory}")
 
     def save_results_to_csv(self, results, output_path):
-        """Saves results to CSV."""
+        """Writes results to CSV in streaming mode."""
         self.ensure_directory_exists(output_path)
-        print(f"[💾] Saving results to {output_path}")
+        print(f"[💾] Writing results to {output_path}")
 
         write_header = not os.path.exists(output_path)
         with open(output_path, 'a', newline='', encoding='utf-8') as file:
             writer = csv.DictWriter(file, fieldnames=[
-                'hash', 'phrase', 'similarity', 'adjacent_sentences'
+                'phrase', 'phrase_report_title', 'found_report_hash',
+                'similarity', 'found_sentence', 'label'
             ])
             if write_header:
                 writer.writeheader()
@@ -121,6 +125,7 @@ class SimilarityPipeline:
             start_idx = batch_idx * self.batch_size
             end_idx = min((batch_idx + 1) * self.batch_size, len(report_sentences))
 
+            # Print the batch info with actual sentence indices
             print(f"[🚀] Processing batch {batch_idx + 1}/{num_batches}")
 
             batch_df = pl.DataFrame(report_sentences[start_idx:end_idx])
@@ -132,11 +137,11 @@ class SimilarityPipeline:
             del batch_df, similarities, results
             gc.collect()
 
-        print("[✅] Processing completed!")
+        print("[✅] Finished processing!")
 
 
 ############################################################
-#                   Running the Pipeline                  #
+#                   Pipeline Execution                    #
 ############################################################
 
 def main():
@@ -159,3 +164,4 @@ def main():
 if __name__ == '__main__':
     csv.field_size_limit(10**9)
     main()
+
