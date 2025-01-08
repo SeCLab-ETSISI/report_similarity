@@ -163,4 +163,5 @@ cython_debug/
 
 
 # venv
-.similiarty-venv/
+.similiarty_venv/
+.faiss_venv/

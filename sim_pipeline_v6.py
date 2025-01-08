@@ -1,161 +1,103 @@
 import polars as pl
-import json, csv, os
+from nltk.tokenize import sent_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from scipy.sparse import csr_matrix
-import numpy as np
-import nltk
-from nltk.tokenize import sent_tokenize
-import gc
-from io import StringIO
+import csv
+import gc  # Garbage collection module
 
+# Function to load data
+def load_data(reports_path, phrases_path):
+    print(f"[📂] Loading reports from {reports_path}")
+    reports_df = pl.read_csv(reports_path, separator="|", null_values="\0", truncate_ragged_lines=True)
+    reports_df = reports_df.with_columns(
+        pl.col("text").map_elements(lambda text: sent_tokenize(text.lower().strip())).alias("sentences")
+    ).drop("text")
+    
+    print(f"[📂] Loading phrases from {phrases_path}")
+    phrases_df = pl.read_csv(phrases_path, separator=",", null_values="\0", truncate_ragged_lines=True)
+    
+    return reports_df, phrases_df
 
-def get_adjacent_sentences(batch_df, sentence_idx, N=2):
-    """Returns N sentences before and after the found sentence."""
-    start_idx = max(0, sentence_idx - N)
-    end_idx = min(len(batch_df) - 1, sentence_idx + N)
-    return batch_df['sentence'][start_idx:end_idx + 1].to_list()
+# Function to retrieve surrounding sentences
+def get_surrounding_sentences(sentences, index, n):
+    # Get N sentences before, the sentence itself, and N sentences after
+    start = max(0, index - n)
+    end = min(len(sentences), index + n + 1)
+    surrounding_sentences = sentences[start:end]
+    return surrounding_sentences
 
-
-class SimilarityPipeline:
-    def __init__(self, reports_path, phrases_path, report_identifier='_id', phrase_field='sentence',
-                 label_field='label_tec', threshold=0.75, batch_size=500, N=2):
-        self.reports_path = reports_path
-        self.phrases_path = phrases_path
-        self.report_identifier = report_identifier
-        self.phrase_field = phrase_field
-        self.label_field = label_field
-        self.threshold = threshold
-        self.batch_size = batch_size
-        self.N = N
+# Function to process and save output to file
+def process_and_save_output(reports_df, phrases_df, output_path, top_n=1, surrounding_n=2, similarity_threshold=0.75):
+    # Initialize TF-IDF vectorizer
+    vectorizer = TfidfVectorizer()
+    
+    # Open output CSV file
+    with open(output_path, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow(['phrase_to_search', 'sentences_before', 'sentences_after', 'found_at (offset)', 'similarity_score'])
         
-    def load_data(self):
-        """Loads phrases into a Polars DataFrame."""
-        print(f"[📂] Loading phrases from {self.phrases_path}")
+        # Process each report
+        for report_idx, report_row in reports_df.iterrows():
+            print(f"Processing report {report_idx + 1}/{len(reports_df)}")
+            
+            first_report_sentences = report_row['sentences']
+            
+            # Process each phrase
+            for idx, first_phrase in enumerate(phrases_df['sentence']):
+                print(f"Finding for phrase: {first_phrase}")
+                
+                # Use a pre-filtering mechanism to quickly ignore highly dissimilar sentences
+                filtered_sentences = [
+                    sentence for sentence in first_report_sentences
+                    if len(sentence.split()) > 3  # Avoid very short sentences that are unlikely to match
+                ]
+                
+                # Score each sentence in the report against the phrase
+                sentence_scores = []
+                for i, sentence in enumerate(filtered_sentences):
+                    documents = [sentence, first_phrase]
+                    tfidf_matrix = vectorizer.fit_transform(documents)
+                    similarity_score = cosine_similarity(tfidf_matrix[0], tfidf_matrix[1])[0, 0]
+                    del tfidf_matrix  # Delete TF-IDF matrix after use
+                    gc.collect()  # Run garbage collection
+                    
+                    # Only append to sentence_scores if similarity is above the threshold
+                    if similarity_score >= similarity_threshold:
+                        sentence_scores.append((i, sentence, similarity_score))
+                    
+                    del similarity_score  # Delete similarity score after appending
+                    gc.collect()  # Run garbage collection
+                
+                # If we found valid sentences (with similarity >= 0.75)
+                if sentence_scores:
+                    # Sort sentences by similarity score in descending order
+                    sorted_sentences = sorted(sentence_scores, key=lambda x: x[2], reverse=True)
+                    
+                    # Get the most similar sentence (top 1)
+                    sentence_index, top_sentence, score = sorted_sentences[0]
+                    
+                    # Retrieve surrounding sentences
+                    surrounding_sentences = get_surrounding_sentences(first_report_sentences, sentence_index, surrounding_n)
+                    sentences_before = ' '.join(surrounding_sentences[:surrounding_n])
+                    sentences_after = ' '.join(surrounding_sentences[surrounding_n + 1:])
+                    
+                    # Write to CSV
+                    writer.writerow([first_phrase, sentences_before, sentences_after, sentence_index, score])
+                    print(f"Score: {score:.4f} | Sentence: {top_sentence}")
+            
+            # Clear sentence_scores after processing each report
+            del sentence_scores  # Delete the sentence_scores list
+            gc.collect()  # Run garbage collection
 
-        if self.phrases_path.endswith('.csv'):
-            self.phrases_df = pl.read_csv(self.phrases_path)
-        elif self.phrases_path.endswith('.json'):
-            with open(self.phrases_path, 'r') as file:
-                phrases_data = json.load(file)
-            self.phrases_df = pl.DataFrame(phrases_data)
-        else:
-            raise ValueError("Unsupported file format. Only .csv and .json are accepted.")
-
-        print(f"Phrases DataFrame columns: {self.phrases_df.columns}")
-        print(f"DataFrame size: {self.phrases_df.shape}")
-
-    def process_reports(self):
-        """Processes reports into tokenized sentences."""
-        print(f"[📂] Processing reports from {self.reports_path}")
-
-        with open(self.reports_path, 'r', encoding='utf-8') as file:
-            data = file.read().replace('\x00', '')
-            file_no_nulls = StringIO(data)
-            reader = csv.DictReader(file_no_nulls, delimiter='|', quoting=csv.QUOTE_ALL)
-
-            for row in reader:
-                text = row.get('text')
-                if text:
-                    sentences = sent_tokenize(text.lower().strip())
-                    for sentence in sentences:
-                        yield {'sentence': sentence, 'hash': row[self.report_identifier]}
-
-    def vectorize_and_calculate_similarity(self, batch_df):
-        """Vectorizes sentences and calculates cosine similarity."""
-        print("[+] Vectorizing batch sentences and phrases")
-
-        vectorizer = TfidfVectorizer()
-        tfidf_phrases = vectorizer.fit_transform(self.phrases_df[self.phrase_field].to_list())
-
-        tfidf_sentences = vectorizer.transform(batch_df['sentence'].to_list())
-        similarities = cosine_similarity(tfidf_phrases, tfidf_sentences)
-        return csr_matrix(similarities)
-
-    def filter_results(self, batch_df, similarities):
-        """Filters results and retrieves adjacent sentences."""
-        results = []
-        for phrase_idx, sims in enumerate(similarities):
-            similar_indices = sims.indices[sims.data >= self.threshold]
-
-            for sentence_idx in map(int, similar_indices):
-                adjacent_sentences = get_adjacent_sentences(batch_df, sentence_idx, self.N)
-                results.append({
-                    'hash': batch_df['hash'][int(sentence_idx)],  # Report ID
-                    'phrase': self.phrases_df[self.phrase_field][phrase_idx],  # Found phrase
-                    'similarity': sims.data[sims.indices == sentence_idx][0],  # Similarity score
-                    'adjacent_sentences': adjacent_sentences  # List of adjacent sentences
-                })
-        return results
-
-    def ensure_directory_exists(self, file_path):
-        """Creates the output directory if it does not exist."""
-        directory = os.path.dirname(file_path)
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-            print(f"[📂] Created directory: {directory}")
-
-    def save_results_to_csv(self, results, output_path):
-        """Saves results to CSV."""
-        self.ensure_directory_exists(output_path)
-        print(f"[💾] Saving results to {output_path}")
-
-        write_header = not os.path.exists(output_path)
-        with open(output_path, 'a', newline='', encoding='utf-8') as file:
-            writer = csv.DictWriter(file, fieldnames=[
-                'hash', 'phrase', 'similarity', 'adjacent_sentences'
-            ])
-            if write_header:
-                writer.writeheader()
-            writer.writerows(results)
-
-    def run(self, output_path):
-        self.load_data()
-        report_sentences = list(self.process_reports())
-
-        num_batches = len(report_sentences) // self.batch_size + (
-            1 if len(report_sentences) % self.batch_size != 0 else 0
-        )
-
-        for batch_idx in range(num_batches):
-            start_idx = batch_idx * self.batch_size
-            end_idx = min((batch_idx + 1) * self.batch_size, len(report_sentences))
-
-            print(f"[🚀] Processing batch {batch_idx + 1}/{num_batches}")
-
-            batch_df = pl.DataFrame(report_sentences[start_idx:end_idx])
-            similarities = self.vectorize_and_calculate_similarity(batch_df)
-            results = self.filter_results(batch_df, similarities)
-            self.save_results_to_csv(results, output_path)
-
-            # Free memory
-            del batch_df, similarities, results
-            gc.collect()
-
-        print("[✅] Processing completed!")
-
-
-############################################################
-#                   Running the Pipeline                  #
-############################################################
-
-def main():
-    pipeline = SimilarityPipeline(
-        reports_path='./data/reports/reports_18k.csv',
-        phrases_path='./data/cti_to_mitre/cti_to_mitre_full.csv',
-        report_identifier='_id',
-        phrase_field='sentence',
-        label_field='label_tec',
-        threshold=0.75,
-        batch_size=5000,
-        N=2
-    )
-
-    pipeline.run(
-        output_path='./similarity-results/full_report_similarity.csv'
-    )
-
-
+# Main Execution
 if __name__ == '__main__':
-    csv.field_size_limit(10**9)
-    main()
+    # File paths
+    reports_path = './data/reports/reports_18k.csv'
+    phrases_path = './data/cti_to_mitre/split_files/cti_to_mitre_part_1.csv'
+    output_path = './similarity_output2.csv'
+    
+    # Load data
+    reports_df, phrases_df = load_data(reports_path, phrases_path)
+    
+    # Process and save the output
+    process_and_save_output(reports_df, phrases_df, output_path)
