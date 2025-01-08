@@ -1,3 +1,9 @@
+# 
+# IMPORTANT NOTE:
+#    - phrases refer to phrases extracted from the TRAM (or equivalent) dataset
+#    - sentences refer to the sentences extracted from the reports (sentence tokenized)
+# 
+
 import os
 import pandas as pd
 import polars as pl
@@ -22,7 +28,7 @@ def load_data(reports_path, phrases_path):
     print(f"[📂] Loading phrases from {phrases_path}")
     phrases_df = pl.read_csv(phrases_path, separator=",", null_values="\0", truncate_ragged_lines=True)
     
-    # Lowercase the 'sentence' column of the phrases
+    # lowercase the 'sentence' column of the phrases (higher similarity scores)
     phrases_df = phrases_df.with_columns(
         pl.col("sentence").str.to_lowercase().alias("sentence")
     )
@@ -41,34 +47,30 @@ def tokenize_sentences(sentences):
 
 def get_surrounding_sentences(sentences, idx, num_surrounding=2):
     """Fetches the surrounding sentences before and after the matched sentence, ensuring accurate boundaries."""
-    # Adjust the start and end indices, making sure we don't go out of bounds
+    # adjust start and end indices, making sure we don't go out of bounds
     start_idx = max(0, idx - num_surrounding)
     end_idx = min(len(sentences), idx + num_surrounding + 1)
 
-    # Extract before and after sentences based on the adjusted indices
+    # sentences before and after the one we found based on the adjusted indices
     before = sentences[start_idx:idx]
     after = sentences[idx+1:end_idx]
 
-    # Return the sentences before, the matched sentence itself, and after
     return before, sentences[idx], after
 
 if __name__ == '__main__':
-    # File paths
+    # future params for pipeline
+    #@todo: adapt to pipeline class
     reports_path = './data/reports/reports_18k.csv'
     phrases_path = './data/cti_to_mitre/cti_to_mitre_full.csv'
-    output_file = './batch_outputs/all_results_final.csv'  # Single output file for all results
+    output_file = './batch_outputs/all_results_final.csv'
+    batch_size = 5000  # report sentences per batch: do not mistake with dataset phrases
 
-    # Parameters
-    batch_size = 5000  # Number of sentences to process in each batch
-
-    # Create output directory if not exists
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
-    # Load data
     print("[📂] Loading data...")
     reports_df, phrases_df = load_data(reports_path, phrases_path)
 
-    # Flatten sentences with report IDs
+    # flatten sentences with report IDs because dimension errors
     print(f"[🔄] Flattening report sentences with IDs.")
     report_sentences = [
         (sentence, report_id)
@@ -101,34 +103,34 @@ if __name__ == '__main__':
             
             # Prepare all sentences (reports and phrases) for TF-IDF vectorization
             print("[📈] Preparing sentences for TF-IDF vectorization.")
-            all_sentences = list(batch_sentences) + phrases_df['sentence'].to_list()  # Convert batch_sentences to list
+            all_sentences = list(batch_sentences) + phrases_df['sentence'].to_list()  # All sentences in the dataset (a lo bestia)
 
-            # Initialize TF-IDF Vectorizer and fit it to both report sentences and phrases
-            vectorizer = TfidfVectorizer()
+            
+            vectorizer = TfidfVectorizer()      # fit to both report sentences and phrases
             tfidf_matrix = vectorizer.fit_transform(all_sentences)
 
             # Split the TF-IDF matrix: the first part corresponds to report sentences, and the second to phrases
             report_tfidf_matrix = tfidf_matrix[:len(batch_sentences)]
             phrase_tfidf_matrix = tfidf_matrix[len(batch_sentences):]
 
-            # Store results for the current batch
+            # results for the current batch
             results = []
 
-            # Calculate cosine similarity between report sentences and phrases
+            # cosine similarity between report sentences and phrases in the TRAM/whatever dataset
             for idx, phrase in enumerate(phrases_df['sentence']):
                 phrase_tfidf = phrase_tfidf_matrix[idx]
 
-                # Calculate cosine similarity between the current phrase and all report sentences
+                # cosine similarity between the current phrase and all report sentences
                 cosine_scores = cosine_similarity(phrase_tfidf, report_tfidf_matrix).flatten()
 
-                # Store results where the cosine similarity is above a certain threshold (e.g., 0.7)
+                # store results where the cosine similarity is above the established threshold
                 for rank, (cosine_score, sentence, report_id) in enumerate(zip(cosine_scores, batch_sentences, batch_ids)):
                     if cosine_score >= 0.7:
                         before, matching_sentence, after = get_surrounding_sentences(batch_sentences, rank)
 
-                        # Append results including the label_tec
+                        # append results 
                         results.append({
-                            'label_tec': phrases_df['label_tec'][idx],  # Add the label_tec from phrases_df
+                            'label_tec': phrases_df['label_tec'][idx],  # label_tec from phrases_df
                             'original_phrase': phrase,
                             'before': ' '.join(before),
                             'matching_report_sentence': matching_sentence,
@@ -138,18 +140,17 @@ if __name__ == '__main__':
                             'cosine_score': cosine_score
                         })
 
-            # Write results for the current batch to the single CSV file
+            # write results for the current batch to the single CSV file
             if results:
                 results_df = pd.DataFrame(results)
                 if header_needed:
-                    # Write the header only once
+                    #! header only once
                     results_df.to_csv(output_csv, index=False, escapechar="\\", header=True)
-                    header_needed = False  # After writing the header, no need to write it again
-                else:
-                    # Append the results
+                    header_needed = False  #! after writing the header, no need to write it again
+                else:       # just append
                     results_df.to_csv(output_csv, index=False, escapechar="\\", header=False)
 
-                # Clear results from memory
+                # clear results from memory
                 del results
                 print(f"[✅] Batch {batch_idx + 1} processed and saved to single file.")
 
