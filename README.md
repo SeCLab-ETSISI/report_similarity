@@ -18,23 +18,11 @@ and install the required packages:
 
 * The `final_results` folder contains example outputs for sentences and full report similarities.
 * `pdf_csv_pipeline.py` allows to create a .csv file from a report full of .pdf files, extracting their md5 hash (identifier) and text.
-* `sim_pipeline.py` allows to find sentences in full texts and obtain the `N` adjacent sentences, use `N=0` for full texts.
+* `tfidf_pipeline.py` allows to find sentences in full texts and obtain the `N` adjacent sentences.
+* The `data` folder contains the full reports dataset *reports_18k.csv*, and a script to retrieve the aforementioned texts. The [CTI to mitre](https://github.com/dessertlab/cti-to-mitre-with-nlp) and [TRAM](https://github.com/center-for-threat-informed-defense/tram) datasets are included as sentences for retrieval. 
+Split versions of *CTI to mitre* are included for smaller scale tests.
+* The root folder contains the main scripts, `tfidf_pipeline.py` and `tfidf_script.py`. The former contains code readability upgrades and allows to comfortably adjust parameters such as batch size, similarity threshold, datasets and output files. The latter is maintained in order to conduct paralellization tests.
 
-
-```txt
-├── LICENSE
-├── README.md
-├── final_results
-│   ├── PIPELINE_adjacent_sentences_similarity.json
-│   ├── PIPELINE_full_report_similarity.csv
-│   └── adjacent_sentences_similarity.json
-├── pdf_csv_pipeline.py
-├── requirements.txt
-└── sim_pipeline.py
-```
-
-## How to use
-Create a csv file using `pdf_csv_pipeline.py`, and use the resulting .csv file in `sim_pipeline.py`.
 
 ## Contribute
 
