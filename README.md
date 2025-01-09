@@ -23,6 +23,7 @@ and install the required packages:
 Split versions of *CTI to mitre* are included for smaller scale tests.
 * The root folder contains the main scripts, `tfidf_pipeline.py` and `tfidf_script.py`. The former contains code readability upgrades and allows to comfortably adjust parameters such as batch size, similarity threshold, datasets and output files. The latter is maintained in order to conduct paralellization tests.
 
+Some example results are kept under the `batch_outputs` folder, and results obtained in previous experiments can be found within the `old_results` directory.
 
 ## Contribute
 
